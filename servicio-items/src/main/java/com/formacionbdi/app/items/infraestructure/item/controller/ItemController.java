@@ -2,6 +2,7 @@ package com.formacionbdi.app.items.infraestructure.item.controller;
 
 import com.formacionbdi.app.items.domain.item.models.entity.Item;
 import com.formacionbdi.app.items.domain.item.ports.service.ItemService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("item")
 public class ItemController {
+    @Qualifier("itemServiceFeign")
     private final ItemService itemService;
 
     public ItemController(ItemService itemService) {
