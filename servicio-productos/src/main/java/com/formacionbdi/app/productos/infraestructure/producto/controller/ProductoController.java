@@ -22,6 +22,13 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ProductoDto findById(@PathVariable(name = "id") Long id) {
+        /*
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+         */
         return this.productoService.findById(id);
     }
 
