@@ -5,6 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: 'file:///C:/Desarrollo/Cursos/SpringCloud/'
+          uri: 'file:///C:/Desarrollo/Cursos/SpringCloud'
+          searchPaths: 'configuracion'
 server:
   port: 8888

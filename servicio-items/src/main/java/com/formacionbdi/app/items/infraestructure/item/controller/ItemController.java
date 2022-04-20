@@ -8,11 +8,16 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -20,6 +25,9 @@ import java.util.concurrent.CompletableFuture;
 public class ItemController {
     private static final String NAME_CIRCUIT = "item";
     private static final Logger log = LoggerFactory.getLogger(ItemController.class);
+    @Value("${configuracion.texto}")
+    private String texto;
+
     @Qualifier("itemServiceFeign")
     private final ItemService itemService;
     private final CircuitBreakerFactory circuitBreakerFactory;
@@ -58,6 +66,14 @@ public class ItemController {
     @GetMapping("/timelimiter/{id}/{cantidad}")
     public CompletableFuture<Item> detalleImplementacionTimeLimiter(@PathVariable(name = "id") Long id, @PathVariable(name = "cantidad") Integer cantidad) {
         return CompletableFuture.supplyAsync(() -> this.itemService.findById(id, cantidad));
+    }
+
+    @GetMapping("/config")
+    public ResponseEntity<?> obtenerConfiguracion() {
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("texto", texto);
+        log.info("Texto: {}", texto);
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     public Item metodoAlternativo(Long id, Integer cantidad, Throwable error) {

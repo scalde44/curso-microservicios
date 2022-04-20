@@ -3,12 +3,16 @@ spring:
     name: servicio-items
     #config:
     #import: 'optional:configserver:'
-server:
-  port: 8082
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+  cloud:
+    config:
+      uri: http://localhost:8888
+#server:
+#  port: 8082
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+
 #hystrix:
 #  command:
 #    default:
