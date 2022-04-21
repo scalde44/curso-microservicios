@@ -3,6 +3,8 @@ spring:
     name: servicio-items
     #config:
     #import: 'optional:configserver:'
+  profiles:
+    active: dev
   cloud:
     config:
       uri: http://localhost:8888

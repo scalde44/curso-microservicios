@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,17 @@ import java.util.concurrent.CompletableFuture;
 public class ItemController {
     private static final String NAME_CIRCUIT = "item";
     private static final Logger log = LoggerFactory.getLogger(ItemController.class);
+
     @Value("${configuracion.texto}")
     private String texto;
 
+    private final Environment environment;
     @Qualifier("itemServiceFeign")
     private final ItemService itemService;
     private final CircuitBreakerFactory circuitBreakerFactory;
 
-    public ItemController(ItemService itemService, CircuitBreakerFactory circuitBreakerFactory) {
+    public ItemController(Environment environment, ItemService itemService, CircuitBreakerFactory circuitBreakerFactory) {
+        this.environment = environment;
         this.itemService = itemService;
         this.circuitBreakerFactory = circuitBreakerFactory;
     }
@@ -73,6 +77,20 @@ public class ItemController {
         Map<String, String> respuesta = new HashMap<>();
         respuesta.put("texto", texto);
         log.info("Texto: {}", texto);
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
+    @GetMapping("/perfiles")
+    public ResponseEntity<?> obtenerPerfilesInfo() {
+        Map<String, String> respuesta = new HashMap<>();
+        if (environment.getActiveProfiles().length > 0 && environment.getActiveProfiles()[0].equalsIgnoreCase("dev")) {
+            String nombre = environment.getProperty("configuracion.autor.nombre");
+            String correo = environment.getProperty("configuracion.autor.correo");
+            respuesta.put("autor.nombre", nombre);
+            respuesta.put("autor.correo", correo);
+            log.info("Nombre: {}", nombre);
+            log.info("Correo: {}", correo);
+        }
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
