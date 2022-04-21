@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: 'file:///C:/Desarrollo/Cursos/SpringCloud/configuracion'
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: 'file:///C:/Desarrollo/Cursos/SpringCloud'
+#          searchPaths: 'configuracion'
+server:
+  port: 8888
