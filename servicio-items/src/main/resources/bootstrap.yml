@@ -46,3 +46,8 @@ resilience4j:
     instances:
       item:
         base-config: defecto
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
