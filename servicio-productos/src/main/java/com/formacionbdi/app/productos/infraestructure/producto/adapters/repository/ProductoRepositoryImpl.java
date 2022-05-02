@@ -33,4 +33,9 @@ public class ProductoRepositoryImpl implements ProductoRepository {
     public Producto save(Producto producto) {
         return this.productoRepositoryJpa.save(new ProductEntity(producto)).toProducto();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.productoRepositoryJpa.deleteById(id);
+    }
 }
