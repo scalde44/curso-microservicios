@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "servicio-productos")
-@RequestMapping("product")
+@FeignClient(name = "servicio-productos", path = "product")
 public interface ProductoClienteFeignRest {
 
     @GetMapping
