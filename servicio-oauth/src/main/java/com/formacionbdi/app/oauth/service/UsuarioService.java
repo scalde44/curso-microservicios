@@ -2,6 +2,7 @@ package com.formacionbdi.app.oauth.service;
 
 import com.formacionbdi.app.oauth.client.UsuarioFeignClient;
 import com.formacionbdi.app.oauth.domain.usuario.models.entity.Usuario;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,8 +29,10 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = findByUsername(username);
-        if (usuario == null) {
+        Usuario usuario;
+        try {
+            usuario = findByUsername(username);
+        } catch (FeignException e) {
             log.error(LOG_USUARIO_NO_ENCONTRADO, username);
             throw new UsernameNotFoundException(String.format(USUARIO_NO_ENCONTRADO, username));
         }
@@ -44,6 +47,11 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 
     @Override
     public Usuario findByUsername(String username) {
-        return usuarioFeignClient.findByUsername(username);
+        return this.usuarioFeignClient.findByUsername(username);
+    }
+
+    @Override
+    public Usuario update(Usuario usuario, Long id) {
+        return this.usuarioFeignClient.update(usuario, id);
     }
 }

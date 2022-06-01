@@ -21,7 +21,8 @@ public class UpdateUserService {
                 .lastName(user.getLastName())
                 .password(user.getPassword())
                 .username(user.getUsername())
-                .roles(user.getRoles()).build();
+                .roles(user.getRoles())
+                .tries(user.getTries()).build();
         return this.userRepository.save(userActualizar);
     }
 

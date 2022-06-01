@@ -18,6 +18,7 @@ public class Usuario implements Serializable {
     private String lastName;
     private String email;
     private List<Role> roles;
+    private Integer tries;
 
     public List<Role> getRoles() {
         List<Role> rolesCopy = new ArrayList<>();

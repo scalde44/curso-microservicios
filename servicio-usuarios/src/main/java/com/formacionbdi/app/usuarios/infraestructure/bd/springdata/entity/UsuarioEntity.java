@@ -33,6 +33,7 @@ public class UsuarioEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
     private List<RolEntity> roles;
+    private Integer intentos;
 
     public User toUser() {
         return User.builder()
@@ -44,6 +45,7 @@ public class UsuarioEntity implements Serializable {
                 .password(getPassword())
                 .username(getUsername())
                 .roles(getRoles().stream().map(RolEntity::toRole).collect(Collectors.toList()))
+                .tries(getIntentos())
                 .build();
     }
 
@@ -56,6 +58,7 @@ public class UsuarioEntity implements Serializable {
                 .name(getNombre())
                 .password(getPassword())
                 .username(getUsername())
+                .tries(getIntentos())
                 .build();
     }
 
@@ -68,5 +71,6 @@ public class UsuarioEntity implements Serializable {
         this.password = user.getPassword();
         this.username = user.getUsername();
         this.roles = user.getRoles().stream().map(role -> new RolEntity(role)).collect(Collectors.toList());
+        this.intentos = user.getTries();
     }
 }
